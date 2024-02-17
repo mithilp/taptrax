@@ -21,7 +21,11 @@ export async function POST(request: NextRequest) {
 
 		return new Promise((resolve, reject) => {
 			exec(
-				`ffmpeg -ss 2 -i ${dir}top.mp4 -frames:v 1 -q:v 2 ${dir}${time}/top.jpg ; ffmpeg -ss 2 -i ${dir}bottom.mp4 -frames:v 1 -q:v 2 ${dir}${time}/bottom.jpg`,
+				`ffmpeg -ss ${
+					time / 1000
+				} -i ${dir}top.mp4 -frames:v 1 -q:v 2 ${dir}${time}/top.jpg ; ffmpeg -ss ${
+					time / 1000
+				} -i ${dir}bottom.mp4 -frames:v 1 -q:v 2 ${dir}${time}/bottom.jpg`,
 				(error) => {
 					if (error) {
 						reject(error);

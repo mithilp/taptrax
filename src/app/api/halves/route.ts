@@ -1,5 +1,7 @@
 import { exec } from "child_process";
+import { mkdir } from "fs/promises";
 import { NextRequest } from "next/server";
+import { join } from "path";
 
 export async function POST(request: NextRequest) {
 	const searchParams = request.nextUrl.searchParams;
@@ -10,18 +12,11 @@ export async function POST(request: NextRequest) {
 	const convertVideo = async () => {
 		console.log("converting video into 2 halves", id);
 
+		const dir = join("./", "tmp", id) + "/";
+
 		return new Promise((resolve, reject) => {
 			exec(
-				`ffmpeg -i ${process
-					.cwd()
-					.replace(
-						" ",
-						"\\ "
-					)}/tmp/${id}/input.mp4 -filter_complex "[0]crop=iw:ih/2:0:0[top];[0]crop=iw:ih/2:0:oh[bottom]" -map "[top]" ${process
-					.cwd()
-					.replace(" ", "\\ ")}/tmp/${id}/top.mp4 -map "[bottom]" ${process
-					.cwd()
-					.replace(" ", "\\ ")}/tmp/${id}/bottom.mp4`,
+				`ffmpeg -i ${dir}input.mp4 -filter_complex "[0]crop=iw/2:ih:0:0[left];[0]crop=iw/2:ih:ow:0[right]" -map "[left]" ${dir}left.mp4 -map "[right]" ${dir}right.mp4 ; ffmpeg -i ${dir}left.mp4 -filter_complex "[0]crop=iw:ih/2:0:0[top];[0]crop=iw:ih/2:0:oh[bottom]" -map "[top]" ${dir}top.mp4 -map "[bottom]" ${dir}bottom.mp4`,
 				(error) => {
 					if (error) {
 						reject(error);
