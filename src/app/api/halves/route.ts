@@ -1,14 +1,14 @@
 import { exec } from "child_process";
 import { NextRequest } from "next/server";
 
-export async function GET(request: NextRequest) {
+export async function POST(request: NextRequest) {
 	const searchParams = request.nextUrl.searchParams;
 	const id = searchParams.get("id") as string;
 
-	console.log("start", id);
+	console.log("start cutting into halves", id);
 
 	const convertVideo = async () => {
-		console.log("Converting video", id);
+		console.log("converting video into 2 halves", id);
 
 		return new Promise((resolve, reject) => {
 			exec(
@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
 
 	await convertVideo();
 
-	console.log("done", id);
+	console.log("done cutting into halves", id);
 
-	return new Response("Hello World", { status: 200 });
+	return new Response("Success", { status: 200 });
 }
