@@ -20,16 +20,17 @@ const getPeaks = async (input: string) => {
 			channelData[i] = 0;
 		}
 		if (channelData[i] < 0 && channelData[i - 1] == 0) {
+			//const time = Math.floor((i / sampleRate) * 1000);
+			const time = i / sampleRate;
 			if (times.length == 0) {
-				times.push(Math.floor((i / sampleRate) * 1000));
+				times.push(parseFloat(time.toFixed(3)));
 			} else if (i / sampleRate - times[count - 1] > 0.07) {
-				times.push(Math.floor((i / sampleRate) * 1000));
+				times.push(parseFloat(time.toFixed(3)));
 				count++;
 			}
 		}
 	}
 
-	console.log(times);
 	return times;
 };
 

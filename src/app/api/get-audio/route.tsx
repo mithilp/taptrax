@@ -28,7 +28,11 @@ export async function POST(request: NextRequest) {
 
 	await getAudio();
 	await denoise(`${dir}input.wav`, `${dir}denoised.wav`);
-	const peaks = await getPeaks(`${dir}denoised.wav`);
-
+	const times: number[] = await getPeaks(`${dir}denoised.wav`);
+	const peaks: number[] = [];
+	for (const i of times) {
+		peaks.push(i * 1000);
+	}
+	console.log("peaks: ", peaks);
 	return new Response(JSON.stringify(peaks), { status: 200 });
 }
