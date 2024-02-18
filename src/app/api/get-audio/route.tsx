@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
 	const searchParams = request.nextUrl.searchParams;
 	const id = searchParams.get("id") as string;
 
-	const dir = join("./", "tmp", id) + "/";
+	const dir = join("../", "tmp", id) + "/";
 
 	const getAudio = () => {
 		return new Promise((resolve, reject) => {
@@ -29,9 +29,13 @@ export async function POST(request: NextRequest) {
 	await getAudio();
 	await denoise(`${dir}input.wav`, `${dir}denoised.wav`);
 	const times: number[] = await getPeaks(`${dir}denoised.wav`);
-	const peaks: number[] = [];
+	const peaks: string[] = [];
 	for (const i of times) {
-		peaks.push(i * 1000);
+		peaks.push(
+			Number(i * 1000)
+				.toString()
+				.split(".")[0]
+		);
 	}
 	console.log("peaks: ", peaks);
 	return new Response(JSON.stringify(peaks), { status: 200 });

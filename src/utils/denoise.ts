@@ -21,29 +21,3 @@ const denoise = async (input: string, output: string) => {
 };
 
 export default denoise;
-
-// usage example
-// denoise("taps.wav", "denoise.wav").then((res) => {
-// 	let buffer = fs.readFileSync("denoise.wav");
-// 	let result = wav.decode(buffer);
-// let sampleRate = result.sampleRate;
-// let channelData = result.channelData[0];
-// let times = [];
-// let count = 1;
-// for (let i = 1; i < channelData.length; i++) {
-// 	if (Math.abs(channelData[i]) < 0.95) {
-// 		channelData[i] = 0;
-// 	}
-// 	if (channelData[i] < 0 && channelData[i - 1] == 0) {
-// 		console.log(i / sampleRate);
-// 		if (times.length == 0) {
-// 			times.push(i / sampleRate);
-// 		} else if (i / sampleRate - times[count - 1] > 0.07) {
-// 			times.push(i / sampleRate);
-// 			count++;
-// 		}
-// 	}
-// }
-// console.log(times);
-// return times;
-// });

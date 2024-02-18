@@ -8,9 +8,9 @@ export async function POST(request: NextRequest) {
 	const id = Math.floor(100000 + Math.random() * 900000).toString();
 
 	const buffer = Buffer.from(bytes);
-	await mkdir(join("./", "tmp", id), { recursive: true });
+	await mkdir(join("../", "tmp", id), { recursive: true });
 
-	const path = join("./", "tmp", id, `input.mp4`);
+	const path = join("../", "tmp", id, `input.mp4`);
 
 	await writeFile(path, buffer);
 

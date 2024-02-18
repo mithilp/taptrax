@@ -30,7 +30,7 @@ const detectImage = async (path: string) => {
 	console.log("blacks", blacks / totalPixels);
 	console.log("whites", whites / totalPixels);
 
-	return blacks / totalPixels > 0.25;
+	return blacks / totalPixels > 0.15;
 };
 
 export async function POST(request: NextRequest) {
@@ -47,15 +47,15 @@ export async function POST(request: NextRequest) {
 	const final = [];
 
 	for await (const time of frames) {
-		const dir = join("./", "tmp", id, time) + "/";
+		const dir = join("../", "tmp", id, time) + "/";
 
-		if (await detectImage("./" + dir + "bottom.jpg")) {
+		if (await detectImage(dir + "bottom.jpg")) {
 			console.log("Detected in bottom.jpg", time);
 			final.push({
 				time: time,
 				position: "bottom",
 			});
-		} else if (await detectImage("./" + dir + "top.jpg")) {
+		} else if (await detectImage(dir + "top.jpg")) {
 			console.log("Detected in top.jpg", time);
 			final.push({
 				time: time,
@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
 	}
 
 	await writeFile(
-		join("./", "tmp", id, "detections.json"),
+		join("../", "tmp", id, "detections.json"),
 		JSON.stringify(final)
 	);
 

@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
 	const getHalves = async (time: number) => {
 		console.log("converting video into 2 halves", id);
 
-		const dir = join("./", "tmp", id, time.toString()) + "/";
+		const dir = join("../", "tmp", id, time.toString()) + "/";
 
 		return new Promise((resolve, reject) => {
 			exec(
@@ -23,6 +23,7 @@ export async function POST(request: NextRequest) {
 				(error) => {
 					if (error) {
 						reject(error);
+						console.log("error running halving");
 						console.error(error);
 					} else {
 						console.log("image cropped successfully");

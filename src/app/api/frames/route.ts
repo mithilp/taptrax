@@ -15,9 +15,9 @@ export async function POST(request: NextRequest) {
 	const getFrames = async (time: number) => {
 		console.log("getting frame ", time);
 
-		await mkdir(join("./", "tmp", id, time.toString()));
+		await mkdir(join("../", "tmp", id, time.toString()));
 
-		const dir = join("./", "tmp", id) + "/";
+		const dir = join("../", "tmp", id) + "/";
 
 		return new Promise((resolve, reject) => {
 			exec(

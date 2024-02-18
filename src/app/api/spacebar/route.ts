@@ -10,14 +10,14 @@ export async function POST(request: NextRequest) {
 
 	console.log("started adding spacebars", id);
 
-	const og_detections = await readFile(`./tmp/${id}/detections.json`, "utf-8");
+	const og_detections = await readFile(`../tmp/${id}/detections.json`, "utf-8");
 	const detections = JSON.parse(og_detections);
 
 	for (const time of frames) {
 		detections.push({ time: time, type: "spacebar" });
 	}
 
-	await writeFile(`./tmp/${id}/detections.json`, JSON.stringify(detections));
+	await writeFile(`../tmp/${id}/detections.json`, JSON.stringify(detections));
 
 	console.log("done adding spacebars", id);
 

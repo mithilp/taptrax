@@ -1,13 +1,20 @@
 "use client";
 
+import Metronome from "@/components/Metronome";
 import VideoPreview from "@/components/VideoPreview";
-import { useEffect, useState, useCallback } from "react";
-import { ReactMediaRecorder } from "react-media-recorder-2";
+import dynamic from "next/dynamic";
+import { useState } from "react";
+// import { ReactMediaRecorder } from "react-media-recorder-2";
+const ReactMediaRecorder = dynamic(
+	() => import("react-media-recorder-2").then((mod) => mod.ReactMediaRecorder),
+	{
+		ssr: false,
+	}
+);
 
 export default function Home() {
 	const [file, setFile] = useState<Blob>();
 
-	const [recording, setRecording] = useState(false);
 	const [startTime, setStartTime] = useState(Date.now());
 
 	const [clicks, setClicks] = useState<Array<number>>([]);
@@ -57,12 +64,10 @@ export default function Home() {
 		<ReactMediaRecorder
 			video
 			onStart={() => {
-				setRecording(true);
 				setStartTime(Date.now());
 			}}
 			onStop={(url, blob) => {
 				setFile(blob);
-				setRecording(true);
 			}}
 			render={({
 				status,
@@ -142,12 +147,15 @@ export default function Home() {
 							)}
 
 							{status === "recording" && (
-								<button
-									className="rounded-md bg-sky-800/50 p-2 "
-									onClick={stopRecording}
-								>
-									Stop Recording
-								</button>
+								<>
+									<button
+										className="rounded-md bg-sky-800/50 p-2 "
+										onClick={stopRecording}
+									>
+										Stop Recording
+									</button>
+									<Metronome />
+								</>
 							)}
 
 							{status === "stopped" && (
