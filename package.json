@@ -10,6 +10,7 @@
 	},
 	"dependencies": {
 		"jimp": "^0.22.10",
+		"midi-writer-js": "^3.1.1",
 		"next": "14.1.0",
 		"react": "^18",
 		"react-dom": "^18"
