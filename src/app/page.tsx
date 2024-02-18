@@ -14,7 +14,9 @@ export default function Home() {
 
 	const onKeyPress = useCallback(
 		(event: KeyboardEvent) => {
-			setPresses((p) => p.concat(Date.now() - startTime));
+			if (recording && event.key === " ") {
+				setPresses((p) => p.concat(Date.now() - startTime));
+			}
 		},
 		[recording, startTime]
 	);
@@ -58,6 +60,12 @@ export default function Home() {
 			method: "POST",
 		});
 		console.log("got detections");
+
+		console.log(presses);
+		await fetch(`/api/spacebar?id=${id}&frames=${presses.join(",")}`, {
+			method: "POST",
+		});
+		console.log("added spacebar");
 
 		window.location.href = `/${id}`;
 	};

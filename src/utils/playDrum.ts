@@ -8,7 +8,7 @@ const playDrum = (music: Array<{ position: string; time: number }>) => {
 					? "/snare.wav"
 					: music[i].position == "bottom"
 					? "/kick.wav"
-					: "/hihat.wav"
+					: "/hat.wav"
 			);
 			audio.play();
 		}, music[i].time);
