@@ -14,7 +14,7 @@ export default function Home() {
 
 	const onKeyPress = useCallback(
 		(event: KeyboardEvent) => {
-			setPresses(presses.concat(Date.now() - startTime));
+			setPresses((p) => p.concat(Date.now() - startTime));
 		},
 		[recording, startTime]
 	);
@@ -41,15 +41,17 @@ export default function Home() {
 		const spikes = await response.json();
 		console.log("got audio", spikes);
 
-		// cut video in halves
-		await fetch(`/api/halves?id=${id}`, { method: "POST" });
-		console.log("cropped video");
-
 		// get frames of each spike
 		await fetch(`/api/frames?id=${id}&frames=${spikes.join(",")}`, {
 			method: "POST",
 		});
 		console.log("got frames");
+
+		// cut frames in halves
+		await fetch(`/api/halves?id=${id}&frames=${spikes.join(",")}`, {
+			method: "POST",
+		});
+		console.log("cropped video");
 
 		// get detections for each spike
 		await fetch(`/api/detect?id=${id}&frames=${spikes.join(",")}`, {

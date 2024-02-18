@@ -8,25 +8,29 @@ const detectImage = async (path: string) => {
 
 	// @ts-ignore
 	await image.color([{ apply: "saturate", params: [100] }]);
+	await image.grayscale();
 	await image.contrast(1);
+	await image.write(path.replace(".jpg", "-edited.jpg"));
+
 	const totalPixels = image.bitmap.width * image.bitmap.height;
-	let reds = 0;
-	let greens = 0;
-	let blues = 0;
+	let blacks = 0;
+	let whites = 0;
 	for (let x = 0; x < image.bitmap.width; x++) {
 		for (let y = 0; y < image.bitmap.height; y++) {
 			const color = await image.getPixelColor(x, y);
 			const hex = jimp.intToRGBA(color);
-			reds += hex.r;
-			greens += hex.g;
-			blues += hex.b;
+			if (hex.r === 255) {
+				whites++;
+			} else {
+				blacks++;
+			}
 		}
 	}
 
-	console.log("reds", reds / totalPixels);
-	console.log("greens", greens / totalPixels);
+	console.log("blacks", blacks / totalPixels);
+	console.log("whites", whites / totalPixels);
 
-	return reds / totalPixels > 200 && greens / totalPixels < 160;
+	return blacks / totalPixels > 0.25;
 };
 
 export async function POST(request: NextRequest) {

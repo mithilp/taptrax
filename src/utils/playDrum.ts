@@ -2,6 +2,7 @@
 
 import { DrumMachine } from "smplr";
 
+// @ts-ignore
 const context = new AudioContext();
 
 const drumMachine = new DrumMachine(context, { instrument: "TR-808" });

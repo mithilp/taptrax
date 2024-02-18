@@ -6,8 +6,8 @@ import { join } from "path";
 export async function POST(request: NextRequest) {
 	const searchParams = request.nextUrl.searchParams;
 	const id = searchParams.get("id") as string;
-	const frameStrings = searchParams.get("frames") as string;
 
+	const frameStrings = searchParams.get("frames") as string;
 	const frames = frameStrings.split(",");
 
 	console.log("started getting frames", id);
@@ -23,9 +23,7 @@ export async function POST(request: NextRequest) {
 			exec(
 				`ffmpeg -ss ${
 					time / 1000
-				} -i ${dir}top.mp4 -frames:v 1 -q:v 2 ${dir}${time}/top.jpg ; ffmpeg -ss ${
-					time / 1000
-				} -i ${dir}bottom.mp4 -frames:v 1 -q:v 2 ${dir}${time}/bottom.jpg`,
+				} -i ${dir}input.mp4 -frames:v 1 -q:v 2 ${dir}${time}/og.jpg`,
 				(error) => {
 					if (error) {
 						reject(error);
@@ -38,8 +36,8 @@ export async function POST(request: NextRequest) {
 		});
 	};
 
-	for (const time of frames) {
-		getFrames(parseInt(time));
+	for await (const time of frames) {
+		await getFrames(parseInt(time));
 	}
 
 	console.log("finished getting frames", id);
