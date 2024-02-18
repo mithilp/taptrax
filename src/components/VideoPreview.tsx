@@ -11,7 +11,9 @@ const VideoPreview = ({ stream }: { stream: MediaStream | null }) => {
 	if (!stream) {
 		return null;
 	}
-	return <video ref={videoRef} width={500} height={500} autoPlay controls />;
+	return (
+		<video className="w-full rounded-xl" ref={videoRef} autoPlay controls />
+	);
 };
 
 export default VideoPreview;
