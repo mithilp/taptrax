@@ -1,7 +1,6 @@
 "use client";
 
 import VideoPreview from "@/components/VideoPreview";
-import { usePressObserver } from "@/utils/usePressObserver";
 import { useEffect, useState, useCallback } from "react";
 import { ReactMediaRecorder } from "react-media-recorder-2";
 
