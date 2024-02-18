@@ -4,12 +4,16 @@ export default function Page({ params }: { params: { id: string } }) {
 	const { id } = params;
 
 	const work = async () => {
-		// cut video in halves
-		await fetch(`/api/halves?id=${id}`, { method: "POST" });
+		// // cut video in halves
+		// await fetch(`/api/halves?id=${id}`, { method: "POST" });
 
-		// get audio spikes
+		// // get audio spikes
 		const spikes = [3129, 5203];
-		await fetch(`/api/frames?id=${id}&frames=${spikes.join(",")}`, {
+		// await fetch(`/api/frames?id=${id}&frames=${spikes.join(",")}`, {
+		// 	method: "POST",
+		// });
+
+		await fetch(`/api/detect?id=${id}&frames=${spikes.join(",")}`, {
 			method: "POST",
 		});
 
