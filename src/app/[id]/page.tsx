@@ -1,9 +1,27 @@
 "use client";
-
+import { useState } from "react";
 import MidiWriter from "midi-writer-js";
+import playDrum from "@/utils/playDrum";
 
 export default function Page({ params }: { params: { id: string } }) {
 	const { id } = params;
+	const [loading, setLoading] = useState(false);
+	const [completed, setCompleted] = useState(false);
+	const [uri, setUri] = useState<string>("");
+	const [track, setTrack] = useState<any[]>([]);
+
+	const play = () => {
+		playDrum(track);
+	};
+
+	const download = async () => {
+		const link = document.createElement("a");
+		link.download = "output.mid";
+		link.href = uri;
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
+	};
 
 	const work = async () => {
 		// cut video in halves
@@ -37,20 +55,36 @@ export default function Page({ params }: { params: { id: string } }) {
 					})
 			)
 		);
+		setTrack(
+			json.map(({ time, position }: { time: string; position: string }) => {
+				return { start: Number(time), position: position };
+			})
+		);
+		setUri(new MidiWriter.Writer(track).dataUri());
 
-		const output = new MidiWriter.Writer(track).dataUri();
-
-		const link = document.createElement("a");
-		link.download = "output.mid";
-		link.href = output;
-		document.body.appendChild(link);
-		link.click();
-		document.body.removeChild(link);
+		setLoading(false);
+		setCompleted(true);
 	};
 
 	return (
 		<div>
-			<button onClick={work}>Go to work</button>
+			{!loading && !completed && (
+				<button
+					onClick={() => {
+						setLoading(true);
+						work();
+					}}
+				>
+					Go to work
+				</button>
+			)}
+			{loading && <p>LOADING...</p>}
+			{completed && (
+				<div>
+					<button onClick={play}>Play</button>
+					<button onClick={download}>Download</button>
+				</div>
+			)}
 		</div>
 	);
 }

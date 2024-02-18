@@ -15,7 +15,8 @@
 		"react": "^18",
 		"react-dom": "^18",
 		"react-media-recorder-2": "^1.6.23",
-		"react-webcam": "^7.2.0"
+		"react-webcam": "^7.2.0",
+		"smplr": "^0.12.1"
 	},
 	"devDependencies": {
 		"@types/multer": "^1.4.11",
