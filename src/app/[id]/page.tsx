@@ -1,4 +1,5 @@
 import PlayButton from "@/components/PlayButton";
+import DownloadButton from "@/components/DownloadButton";
 import { readFile } from "fs/promises";
 
 const getData = async (id: string) => {
@@ -13,6 +14,8 @@ export default async function Page({ params }: { params: { id: string } }) {
 	return (
 		<div>
 			<PlayButton data={data} />
+
+			<DownloadButton data={data} />
 		</div>
 	);
 }
