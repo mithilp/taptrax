@@ -37,7 +37,11 @@ const DownloadButton = ({ data }: { data: Array<any> }) => {
 		document.body.removeChild(link);
 	};
 
-	return <button onClick={download}>Download MIDI</button>;
+	return (
+		<button className="p-4 text-xl bg-sky-800/50 rounded-md" onClick={download}>
+			Download MIDI
+		</button>
+	);
 };
 
 export default DownloadButton;

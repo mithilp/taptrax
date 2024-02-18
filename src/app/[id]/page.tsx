@@ -12,10 +12,12 @@ export default async function Page({ params }: { params: { id: string } }) {
 	const data = await getData(params.id);
 
 	return (
-		<div>
-			<PlayButton data={data} />
+		<div className="h-screen w-screen flex items-center justify-center">
+			<div className="flex space-x-4">
+				<PlayButton data={data} />
 
-			<DownloadButton data={data} />
+				<DownloadButton data={data} />
+			</div>
 		</div>
 	);
 }
