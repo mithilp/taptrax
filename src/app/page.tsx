@@ -4,7 +4,10 @@ import Metronome from "@/components/Metronome";
 import VideoPreview from "@/components/VideoPreview";
 import dynamic from "next/dynamic";
 import { useState } from "react";
-// import { ReactMediaRecorder } from "react-media-recorder-2";
+
+import logo from "../../public/logo.png";
+import Image from "next/image";
+
 const ReactMediaRecorder = dynamic(
 	() => import("react-media-recorder-2").then((mod) => mod.ReactMediaRecorder),
 	{
@@ -134,6 +137,10 @@ export default function Home() {
 									Add Hat
 								</button>
 							</div>
+						)}
+
+						{status === "idle" && (
+							<Image alt="TapTrax logo" height={50} src={logo} />
 						)}
 
 						<div className="flex space-x-2 items-center">
