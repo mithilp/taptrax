@@ -28,12 +28,36 @@ export default function Home() {
 	}, [onKeyPress]);
 
 	const upload = async () => {
-		const response = await fetch("/api/upload", { method: "POST", body: file });
+		const uploadResponse = await fetch("/api/upload", {
+			method: "POST",
+			body: file,
+		});
+		const id = await uploadResponse.text();
+		console.log("uploaded");
 
-		if (response.status === 200) {
-			const id = await response.text();
-			window.location.href = `/${id}`;
-		}
+		const response = await fetch(`/api/get-audio?id=${id}`, {
+			method: "POST",
+		});
+		const spikes = await response.json();
+		console.log("got audio", spikes);
+
+		// cut video in halves
+		await fetch(`/api/halves?id=${id}`, { method: "POST" });
+		console.log("cropped video");
+
+		// get frames of each spike
+		await fetch(`/api/frames?id=${id}&frames=${spikes.join(",")}`, {
+			method: "POST",
+		});
+		console.log("got frames");
+
+		// get detections for each spike
+		await fetch(`/api/detect?id=${id}&frames=${spikes.join(",")}`, {
+			method: "POST",
+		});
+		console.log("got detections");
+
+		window.location.href = `/${id}`;
 	};
 
 	return (

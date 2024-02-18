@@ -1,3 +1,4 @@
+import { writeFile } from "fs/promises";
 import jimp from "jimp";
 import { NextRequest } from "next/server";
 import { join } from "path";
@@ -22,7 +23,10 @@ const detectImage = async (path: string) => {
 		}
 	}
 
-	return reds / totalPixels > 228 && greens / totalPixels < 130;
+	console.log("reds", reds / totalPixels);
+	console.log("greens", greens / totalPixels);
+
+	return reds / totalPixels > 200 && greens / totalPixels < 160;
 };
 
 export async function POST(request: NextRequest) {
@@ -58,7 +62,12 @@ export async function POST(request: NextRequest) {
 		}
 	}
 
+	await writeFile(
+		join("./", "tmp", id, "detections.json"),
+		JSON.stringify(final)
+	);
+
 	console.log("finished detecting in frames", final);
 
-	return new Response(JSON.stringify(final), { status: 200 });
+	return new Response("Success", { status: 200 });
 }
