@@ -1,11 +1,32 @@
 "use client";
 
 import VideoPreview from "@/components/VideoPreview";
-import { useState } from "react";
+import { usePressObserver } from "@/utils/usePressObserver";
+import { useEffect, useState, useCallback } from "react";
 import { ReactMediaRecorder } from "react-media-recorder-2";
 
 export default function Home() {
 	const [file, setFile] = useState<Blob>();
+
+	const [recording, setRecording] = useState(false);
+	const [startTime, setStartTime] = useState(Date.now());
+
+	const [presses, setPresses] = useState<Array<number>>([]);
+
+	const onKeyPress = useCallback(
+		(event: KeyboardEvent) => {
+			setPresses(presses.concat(Date.now() - startTime));
+		},
+		[recording, startTime]
+	);
+
+	useEffect(() => {
+		document.addEventListener("keydown", onKeyPress);
+
+		return () => {
+			document.removeEventListener("keydown", onKeyPress);
+		};
+	}, [onKeyPress]);
 
 	const upload = async () => {
 		const response = await fetch("/api/upload", { method: "POST", body: file });
@@ -19,8 +40,13 @@ export default function Home() {
 	return (
 		<ReactMediaRecorder
 			video
+			onStart={() => {
+				setRecording(true);
+				setStartTime(Date.now());
+			}}
 			onStop={(url, blob) => {
 				setFile(blob);
+				setRecording(true);
 			}}
 			render={({
 				status,
