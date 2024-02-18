@@ -65,9 +65,7 @@ export default function Home() {
 			});
 			console.log("added spacebar");
 
-			await new Promise((resolve) => setTimeout(resolve, 5000));
-
-			window.location.href = `/yolo/fjskldf`;
+			window.location.href = `/${id}`;
 		} catch (error) {
 			alert("Something went wrong!");
 			setLoading(false);
