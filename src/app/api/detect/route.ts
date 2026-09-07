@@ -1,16 +1,15 @@
 import { writeFile } from "fs/promises";
-import jimp from "jimp";
+import { Jimp, intToRGBA } from "jimp";
 import { NextRequest } from "next/server";
 import { join } from "path";
 
 const detectImage = async (path: string) => {
-	const image = await jimp.read(path);
+	const image = await Jimp.read(path);
 
-	// @ts-ignore
 	await image.color([{ apply: "saturate", params: [100] }]);
-	await image.grayscale();
+	await image.greyscale();
 	await image.contrast(1);
-	await image.write(path.replace(".jpg", "-edited.jpg"));
+	await image.write(path.replace(".jpg", "-edited.jpg") as `${string}.${string}`);
 
 	const totalPixels = image.bitmap.width * image.bitmap.height;
 	let blacks = 0;
@@ -18,7 +17,7 @@ const detectImage = async (path: string) => {
 	for (let x = 0; x < image.bitmap.width; x++) {
 		for (let y = 0; y < image.bitmap.height; y++) {
 			const color = await image.getPixelColor(x, y);
-			const hex = jimp.intToRGBA(color);
+			const hex = intToRGBA(color);
 			if (hex.r === 255) {
 				whites++;
 			} else {

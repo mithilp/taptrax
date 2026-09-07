@@ -8,8 +8,9 @@ const getData = async (id: string) => {
 	return detections;
 };
 
-export default async function Page({ params }: { params: { id: string } }) {
-	const data = await getData(params.id);
+export default async function Page({ params }: { params: Promise<{ id: string }> }) {
+	const { id } = await params;
+	const data = await getData(id);
 
 	return (
 		<div className="h-screen w-screen flex items-center justify-center">
